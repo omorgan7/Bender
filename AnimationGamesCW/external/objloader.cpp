@@ -1,10 +1,4 @@
-#include <vector>
-#include <stdio.h>
-#include <iostream>
-#include <string>
-#include <cstring>
 
-#include <glm/glm.hpp>
 
 #include "objloader.hpp"
 
@@ -66,3 +60,19 @@ bool loadSimpleOBJ(const char * path, std::vector<glm::vec3> & out_vertices, std
     return true;
 }
 
+bool writeSimpleObj(const char* path,std::vector<glm::vec3> vertices, std::vector<unsigned int> vertex_indices ){
+    FILE * file = fopen(path, "w");
+    if( file == NULL ){
+        std::cout<<"Can't open file, write not occured.\n";
+        return false;
+    }
+    for(size_t i = 0; i<vertices.size(); i++){
+        fprintf(file,"%v %7.6f %7.6f %7.6f\n",vertices[i].x,vertices[i].y,vertices[i].z);
+    }
+    for(size_t i = 0; i<vertex_indices.size(); i+=3){
+        fprintf(file,"f %u %u %u\n",vertex_indices[i]+1,vertex_indices[i+1]+1,vertex_indices[i+2]+1);
+    }
+    fclose(file);
+    std::cout<<"File written to: "<<path<<"\n";
+    return true;
+}

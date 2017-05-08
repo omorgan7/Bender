@@ -283,7 +283,12 @@ int main(int argc, const char * argv[]) {
     } // Check if the ESC key was pressed or the window was closed
     while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
           glfwWindowShouldClose(window) == 0 );
-    
+    for(auto i = vertices.begin(); i !=vertices.end(); i++){
+        temp = i->x;
+        i->x = -1*i->y;
+        i->y = temp;
+    }
+    writeSimpleObj("output.obj",vertices,vertexIndices);
     // Cleanup VBO
     glDeleteBuffers(1, &vertexbuffer);
     glDeleteVertexArrays(1, &VertexArrayID);
